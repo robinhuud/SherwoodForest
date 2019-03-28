@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+// Simple 3D Turtle class for placing objects and moving around
 public class Turtle3D
 {
     // Turtle's position in space
