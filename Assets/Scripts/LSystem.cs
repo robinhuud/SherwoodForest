@@ -7,9 +7,9 @@ using UnityEngine;
 
 public class LSystem : MonoBehaviour
 {
-    public string axiom = "X";
+    public string axiom = "A";
     public GameObject stem;
-    //public GameObject leaf;
+    public GameObject leaf;
 
     private Dictionary<string, string> rules = new Dictionary<string, string>();
     private string tree = "";
@@ -17,10 +17,10 @@ public class LSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rules.Add("X", "F+[[X]-X]-F[-FX]+X");
-        rules.Add("F", "FF");
         tree = axiom;
-        for(int i = 0; i < 3; i++)
+        rules.Add("X", "F+[[X]-X]-F[^FXL]^X");
+        rules.Add("F", "FF");
+        for (int i = 0; i < 2; i++)
         {
             tree = grow(tree, rules);
         }
@@ -64,7 +64,7 @@ public class LSystem : MonoBehaviour
     {
         Stack<Turtle3D> turtles = new Stack<Turtle3D>();
         // Start my turtle with forward as up and up as back so we make a vertical tree.
-        Turtle3D topTurtle = new Turtle3D(Vector3.zero, Quaternion.LookRotation(Vector3.up, Vector3.back));
+        Turtle3D topTurtle = new Turtle3D(Vector3.zero, Quaternion.LookRotation(Vector3.up, Vector3.back), Vector3.one);
         turtles.Push(topTurtle);
         for (int i = 0; i < lsystem.Length; i++)
         {
@@ -72,7 +72,14 @@ public class LSystem : MonoBehaviour
             switch (lsystem[i])
             {
                 case 'F': // Move forward & draw
-                    topTurtle.Draw(Instantiate(stem), this.transform);
+                    topTurtle.DrawStem(Instantiate(stem), this.transform);
+                    topTurtle.scale *= .95f;
+                    break;
+                case 'f': // Just move forward, no drawing
+                    topTurtle.Move();
+                    break;
+                case 'L':
+                    topTurtle.DrawLeaf(Instantiate(leaf), this.transform);
                     break;
                 case '+': // Rotate Right
                     topTurtle.Turn(Quaternion.AngleAxis(25f, Vector3.up));
@@ -80,8 +87,21 @@ public class LSystem : MonoBehaviour
                 case '-': //Rotate Left
                     topTurtle.Turn(Quaternion.AngleAxis(-25f, Vector3.up));
                     break;
+                case '&': //Pitch down
+                    topTurtle.Turn(Quaternion.AngleAxis(25f, Vector3.right));
+                    break;
+                case '^': // Pitch up
+                    topTurtle.Turn(Quaternion.AngleAxis(-25f, Vector3.right));
+                    break;
+                case '\\': //Roll left
+                    topTurtle.Turn(Quaternion.AngleAxis(-25f, Vector3.forward));
+                    break;
+                case '/': // Roll right
+                    topTurtle.Turn(Quaternion.AngleAxis(25f, Vector3.forward));
+                    break;
                 case '[': //Push stack
-                    turtles.Push(new Turtle3D(topTurtle.position, topTurtle.orientation));
+                    turtles.Push(new Turtle3D(topTurtle.position, topTurtle.orientation, topTurtle.scale));
+                    topTurtle.scale *= .85f;
                     break;
                 case ']': //Pop stack
                     topTurtle = turtles.Pop();
