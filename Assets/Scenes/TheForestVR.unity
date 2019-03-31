@@ -292,7 +292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e0daf67922aed49a5b94f9bd8749e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axiom: X
   stem: {fileID: 100000, guid: 56e4a23e7da9b0a4da3c808b6c2bb3ae, type: 3}
   leaf: {fileID: 100000, guid: c437f64169042ec4db753c167f6e0f55, type: 3}
 --- !u!4 &1156451142
