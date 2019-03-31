@@ -11,28 +11,47 @@ public class Turtle3D
     // Turtle's scale (affects scale of objects placed as well as distance moved)
     public Vector3 scale;
 
+    // default constructor for the Quaternion-challenged :D
+    public Turtle3D() 
+    {
+        this.position = Vector3.zero;
+        this.orientation = Quaternion.LookRotation(Vector3.forward);
+        this.scale = Vector3.one;
+    }
+    // for if you want to do your own thing
     public Turtle3D(Vector3 position, Quaternion orientation, Vector3 scale)
     {
         this.position = position;
         this.orientation = orientation;
         this.scale = scale;
     }
-    public void Turn(Quaternion rotation)
+    // for if you want to copy somebody else
+    public Turtle3D(Turtle3D copy)
+    {
+        this.position = copy.position;
+        this.orientation = copy.orientation;
+        this.scale = copy.scale;
+    }
+    // Change the orientation of the turtle relative to it's forward direction
+    public void Turn(Quaternion rotation) 
     {
         this.orientation *= rotation;
     }
-    public void DrawStem(GameObject renderObject, Transform parent)
+    // Move forward after calling Draw
+    public void MoveDraw(GameObject renderObject, Transform parent) 
     {
-        DrawLeaf(renderObject, parent);
+        Draw(renderObject, parent);
         Move();
     }
-    public void DrawLeaf(GameObject renderObject, Transform parent)
+    // Place the object into the parent with the transformation from the turtle
+    public void Draw(GameObject renderObject, Transform parent) 
     {
         renderObject.transform.SetPositionAndRotation(position, orientation);
         renderObject.transform.localScale = scale;
         renderObject.transform.parent = parent;
     }
-    public void Move()
+    // Move Forward 1 unit in local space
+    public void Move() 
     {
         this.position += orientation * Vector3.Scale(Vector3.forward, this.scale);
     }
