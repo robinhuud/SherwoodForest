@@ -40,15 +40,20 @@ public class Turtle3D
     // Move forward after calling Draw
     public void MoveDraw(GameObject renderObject, Transform parent) 
     {
-        Draw(renderObject, parent);
+        DrawObject(renderObject, parent);
         Move();
     }
-    // Place the object into the parent with the transformation from the turtle
-    public void Draw(GameObject renderObject, Transform parent) 
+    // Place the object into the parent with the transformation from the turtle including scale
+    public void DrawObject(GameObject renderObject, Transform parent) 
     {
-        renderObject.transform.SetPositionAndRotation(position, orientation);
-        renderObject.transform.localScale = scale;
+        DrawObject(renderObject, parent, this.scale);
+    }
+    // Draw Object accpets an optional scale factor which ignores the parent's scale when drawing (but still retains the value for movement)
+    public void DrawObject(GameObject renderObject, Transform parent, Vector3 atScale)
+    {
         renderObject.transform.parent = parent;
+        renderObject.transform.SetPositionAndRotation(position, orientation);
+        renderObject.transform.localScale = atScale;
     }
     // Move Forward 1 unit in local space
     public void Move() 

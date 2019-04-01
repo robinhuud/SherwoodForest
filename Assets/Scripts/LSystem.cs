@@ -238,22 +238,27 @@ public class LSystem : MonoBehaviour
             {
                 case 'F': // Move forward & draw
                     GameObject segment = Instantiate(stem);
-                    if(lsystem[i+1] == '(')
+                    // If this is parameterized, we draw the stem with a scale factor in the non-Z directions
+                    if (lsystem[i+1] == '(') 
                     {
                         string foo = lsystem.Substring(i + 2);
                         foo = foo.Substring(0, foo.IndexOf(')'));
-                        //Debug.Log("foo is " + foo);
                         float val = float.Parse(foo);
-                        topTurtle.scale = new Vector3(val, val, 1f);
+                        i += foo.Length;
+                        topTurtle.DrawObject(segment, this.transform, new Vector3(val, val, 1f));
+                        topTurtle.Move();
                     }
-                    topTurtle.MoveDraw(segment, this.transform);
+                    else
+                    {
+                        topTurtle.MoveDraw(segment, this.transform);
+                    }
 
                     break;
                 case 'f': // Just move forward, no drawing
                     topTurtle.Move();
                     break;
                 case 'L':
-                    topTurtle.Draw(Instantiate(leaf), this.transform);
+                    topTurtle.DrawObject(Instantiate(leaf), this.transform);
                     break;
                 case '+': // Rotate Right
                     topTurtle.Turn(Quaternion.AngleAxis(25f, Vector3.up));
