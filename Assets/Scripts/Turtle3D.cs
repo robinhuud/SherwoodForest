@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-// Simple 3D Turtle class for moving around and placing objects in 3D space
+// Simple 3D Turtle class for moving around in 3D space
 public class Turtle3D
 {
     // Turtle's current position in space
@@ -37,26 +36,8 @@ public class Turtle3D
     {
         this.orientation *= rotation;
     }
-    // Move forward after calling Draw
-    public void MoveDraw(GameObject renderObject, Transform parent) 
-    {
-        DrawObject(renderObject, parent);
-        Move();
-    }
-    // Place the object into the parent with the transformation from the turtle including scale
-    public void DrawObject(GameObject renderObject, Transform parent) 
-    {
-        DrawObject(renderObject, parent, this.scale);
-    }
-    // Draw Object accpets an optional scale factor which ignores the parent's scale when drawing (but still retains the value for movement)
-    public void DrawObject(GameObject renderObject, Transform parent, Vector3 atScale)
-    {
-        renderObject.transform.parent = parent;
-        renderObject.transform.SetPositionAndRotation(position, orientation);
-        renderObject.transform.localScale = atScale;
-    }
     // Move Forward 1 unit in local space
-    public void Move() 
+    public void Move()
     {
         this.position += orientation * Vector3.Scale(Vector3.forward, this.scale);
     }
