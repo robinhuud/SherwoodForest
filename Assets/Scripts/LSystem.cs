@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Data;
+using UnityEngine;
 
 // L-System based on the paper http://algorithmicbotany.org/papers/lsfp.pdf by Przemyslaw Prusinkiewicz and James Hanan
 // and the book "The Algorithmic Beauty of Plants" http://algorithmicbotany.org/papers/#abop (Prusinkiewicz & Lindenmayer 1990)
@@ -150,6 +151,7 @@ public class LSystem
             {
                 if ((contextMatch = contextRule.Match(rule.Key)).Success) // This is a context-sensitive rule
                 {
+                    Debug.Log("Found Context Rule" + contextMatch.Groups.Count);
                     string leftContext, rightContext, leftRule, rightRule, fullContext, matchLiteral;
                     leftRule = contextMatch.Groups[1].Value;
                     rightRule = contextMatch.Groups[3].Value;
@@ -248,8 +250,9 @@ public class LSystem
     // Strips out unwanted characters (from ignoreList) from the context for context matching
     // also ignores 'out of scope' bracketed items eg. "ABC[DE][SG[HI[JK]L]MNO]" with the rule "BC<S>GM"
     // would match the "S" because the "[DE]" sub-branch is not a strict predecessor to the "S"
+    // matches close bracket "]" on the right, but not on the left, (and not open bracket "[")
     // TO DO: modify this to match all subtrees on the right , but only the strict predecessor on the left
-    // and to allow it to match brackets on the right? I'm not sure how that's supposed to work.
+    // 
     private string StripContext(string input)
     {
         string output = "";
@@ -276,6 +279,10 @@ public class LSystem
                 if (endOfContext.Count >= 1) // Don't pop an empty stack
                 {
                     output = output.Substring(0, endOfContext.Pop());
+                }
+                else
+                {
+                    output += ']';
                 }
             }
             else

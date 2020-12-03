@@ -19,13 +19,16 @@ public class PlantRenderer : MonoBehaviour
     void Start()
     {
         LSystem seed = new LSystem("FA");
-        seed.AddRule("A", "[&FA![^L]]/'[&FA![^L]]/'[&FA![^L]]");
-        seed.AddRule("F", "S/F");
+        seed.AddRule("A", "![&FA![^L]]/'[&FA![^L]]/'[&FA![^L]]");
+        seed.AddRule("F(x)", "F(x*1.23)");
+        seed.AddRule("F", "F(1)/S");
+        //seed.AddRule("^^<L>]", "q");
         seed.AddRule("S", "F[^L]");
         seed.AddRule("L", "^L");
         for(int i = 0; i < 5; i++)
         {
             seed.Grow();
+            Debug.Log(seed.ToString());
         }
         TreeBuilder(seed.ToString());
     }
@@ -46,20 +49,22 @@ public class PlantRenderer : MonoBehaviour
         turtles.Push(topTurtle);
         for (int i = 0; i < lsystem.Length; i++)
         {
+            //
+            float angle = 25f;
             // Process the commands, many of them just set values on the top turtle of the stack
             switch (lsystem[i])
             {
                 case 'F': // Move forward & draw
                     GameObject segment = Instantiate(stem);
                     // If this is parameterized, we draw the stem with a scale
-                    // factor in the non-Z directions: thickness of the stem
+                    // factor in the non-Z directions: aka thickness of the stem
                     if (lsystem[i + 1] == '(')
                     {
                         string foo = lsystem.Substring(i + 2);
                         foo = foo.Substring(0, foo.IndexOf(')'));
-                        float val = float.Parse(foo);
+                        float thickness = float.Parse(foo);
                         i += foo.Length;
-                        DrawObject(segment, this.transform, new Vector3(val, val, 1f));
+                        DrawObject(segment, this.transform, new Vector3(thickness, thickness, 1f));
                         topTurtle.Move();
                     }
                     else
@@ -74,32 +79,74 @@ public class PlantRenderer : MonoBehaviour
                     DrawObject(Instantiate(leaf), this.transform);
                     break;
                 case '+': // Rotate Right
-                    topTurtle.Turn(Quaternion.AngleAxis(25f, Vector3.up));
+                    if(lsystem[i+1] == '(')
+                    {
+                        string foo = lsystem.Substring(i + 2);
+                        foo = foo.Substring(0, foo.IndexOf(')'));
+                        angle = float.Parse(foo);
+                        i += foo.Length;
+                    }
+                    topTurtle.Turn(Quaternion.AngleAxis(angle, Vector3.up));
                     break;
                 case '-': //Rotate Left
-                    topTurtle.Turn(Quaternion.AngleAxis(-25f, Vector3.up));
+                    if (lsystem[i + 1] == '(')
+                    {
+                        string foo = lsystem.Substring(i + 2);
+                        foo = foo.Substring(0, foo.IndexOf(')'));
+                        angle = float.Parse(foo);
+                        i += foo.Length;
+                    }
+                    topTurtle.Turn(Quaternion.AngleAxis(-angle, Vector3.up));
                     break;
                 case '&': //Pitch down
-                    topTurtle.Turn(Quaternion.AngleAxis(25f, Vector3.right));
+                    if (lsystem[i + 1] == '(')
+                    {
+                        string foo = lsystem.Substring(i + 2);
+                        foo = foo.Substring(0, foo.IndexOf(')'));
+                        angle = float.Parse(foo);
+                        i += foo.Length;
+                    }
+                    topTurtle.Turn(Quaternion.AngleAxis(angle, Vector3.right));
                     break;
                 case '^': // Pitch up
-                    topTurtle.Turn(Quaternion.AngleAxis(-25f, Vector3.right));
+                    if (lsystem[i + 1] == '(')
+                    {
+                        string foo = lsystem.Substring(i + 2);
+                        foo = foo.Substring(0, foo.IndexOf(')'));
+                        angle = float.Parse(foo);
+                        i += foo.Length;
+                    }
+                    topTurtle.Turn(Quaternion.AngleAxis(-angle, Vector3.right));
                     break;
                 case '\\': //Roll left
-                    topTurtle.Turn(Quaternion.AngleAxis(-25f, Vector3.forward));
+                    if (lsystem[i + 1] == '(')
+                    {
+                        string foo = lsystem.Substring(i + 2);
+                        foo = foo.Substring(0, foo.IndexOf(')'));
+                        angle = float.Parse(foo);
+                        i += foo.Length;
+                    }
+                    topTurtle.Turn(Quaternion.AngleAxis(-137.5f, Vector3.forward));
                     break;
                 case '/': // Roll right
+                    if (lsystem[i + 1] == '(')
+                    {
+                        string foo = lsystem.Substring(i + 2);
+                        foo = foo.Substring(0, foo.IndexOf(')'));
+                        angle = float.Parse(foo);
+                        i += foo.Length;
+                    }
                     topTurtle.Turn(Quaternion.AngleAxis(137.5f, Vector3.forward));
                     break;
                 case '[': //Push stack
                     turtles.Push(new Turtle3D(topTurtle));
-                    topTurtle.scale *= .95f;
+                    //topTurtle.scale *= .85f;
                     break;
                 case ']': //Pop stack
                     topTurtle = turtles.Pop();
                     break;
                 case '!': // Shrink scale of turtle and all children
-                    topTurtle.scale *= .95f;
+                    topTurtle.scale *= .85f;
                     break;
                 case '\'': // Color?
                     break;

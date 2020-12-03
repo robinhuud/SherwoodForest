@@ -1,17 +1,22 @@
 fileFormatVersion: 2
-guid: 56e4a23e7da9b0a4da3c808b6c2bb3ae
+guid: bc3995c1a803d4949b636a9774dab787
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: unnamed
+    2100000: clipart_stick
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Cylinder
-  externalObjects: {}
+    4300000: Plane
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: clipart_stick
+    second: {fileID: 2100000, guid: c3d139b9c82507743a6817c450a80f7d, type: 2}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -43,7 +48,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    useSRGBMaterialColor: 1
+    useSRGBMaterialColor: 0
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
@@ -52,7 +57,7 @@ ModelImporter:
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 0
-    keepQuads: 0
+    keepQuads: 1
     weldVertices: 0
     preserveHierarchy: 0
     indexFormat: 0
@@ -71,7 +76,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
