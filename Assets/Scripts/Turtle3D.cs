@@ -5,17 +5,17 @@ public class Turtle3D
 {
     // Turtle's current position in space
     public Vector3 position;
+
     // Turtle's current rotation from it's starting forward direction
     public Quaternion orientation;
+
     // Turtle's scale (affects scale of objects placed as well as distance moved)
     public Vector3 scale;
 
     // default constructor for the Quaternion-challenged :D
     public Turtle3D() 
     {
-        this.position = Vector3.zero;
-        this.orientation = Quaternion.LookRotation(Vector3.forward);
-        this.scale = Vector3.one;
+        Reset();
     }
     // for if you want to do your own thing
     public Turtle3D(Vector3 position, Quaternion orientation, Vector3 scale)
@@ -40,5 +40,21 @@ public class Turtle3D
     public void Move()
     {
         this.position += orientation * Vector3.Scale(Vector3.forward, this.scale);
+    }
+
+    // Reset it to the default values
+    public void Reset()
+    {
+        this.position = Vector3.zero;
+        this.orientation = Quaternion.LookRotation(Vector3.forward);
+        this.scale = Vector3.one;
+    }
+
+    // Just tell it what all it's values are supposed to be.
+    public void Set(Vector3 position, Quaternion orientation, Vector3 scale)
+    {
+        this.position = position;
+        this.orientation = orientation;
+        this.scale = scale;
     }
 }

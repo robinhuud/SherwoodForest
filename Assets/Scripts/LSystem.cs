@@ -1,7 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Data;
-using UnityEngine;
 
 // L-System based on the paper http://algorithmicbotany.org/papers/lsfp.pdf by Przemyslaw Prusinkiewicz and James Hanan
 // and the book "The Algorithmic Beauty of Plants" http://algorithmicbotany.org/papers/#abop (Prusinkiewicz & Lindenmayer 1990)
@@ -151,7 +150,7 @@ public class LSystem
             {
                 if ((contextMatch = contextRule.Match(rule.Key)).Success) // This is a context-sensitive rule
                 {
-                    Debug.Log("Found Context Rule" + contextMatch.Groups.Count);
+                    //Debug.Log("Found Context Rule" + contextMatch.Groups.Count);
                     string leftContext, rightContext, leftRule, rightRule, fullContext, matchLiteral;
                     leftRule = contextMatch.Groups[1].Value;
                     rightRule = contextMatch.Groups[3].Value;
